@@ -1,12 +1,16 @@
+import { Routes, Route } from "react-router-dom";
+import Header from "./components/Header.jsx";
+import About from "./pages/About.jsx";
 
-function App() {
-
+export default function App() {
   return (
     <>
-      <h1>First Commit</h1>
-
+      <Header />
+      <main className="container mt-4">
+        <Routes>
+          <Route path="/about" element={<About />} />
+        </Routes>
+      </main>
     </>
-  )
+  );
 }
-
-export default App
