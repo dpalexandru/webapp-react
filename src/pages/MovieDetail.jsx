@@ -23,11 +23,23 @@ export default function MovieDetail() {
 
   // carico il singolo film
   useEffect(() => {
+    let cancelled = false;
     showLoader();
+
     axios
       .get(`http://localhost:3000/movies/${id}`)
-      .then((res) => setMovie(res.data))
-      .catch((err) => console.log("Errore nella chiamata:", err.message));
+      .then((res) => {
+        if (!cancelled) setMovie(res.data);
+      })
+      .catch((err) => console.log("Errore nella chiamata:", err.message))
+      .finally(() => {
+        // spegno loader 
+        if (!cancelled) hideLoader();
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, [id]);
 
   // carico anche la lista film per sapere quanti sono
