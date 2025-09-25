@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReviewById from "../components/ReviewById";
 import ReviewForm from "../components/ReviewForm";
+import { useLoader } from "../context/LoaderContext";
 
 
 
@@ -13,6 +14,7 @@ export default function MovieDetail() {
   const [moviesCount, setMoviesCount] = useState(0);
   const [reviews, setReviews] = useState([]);
   const currentId = parseInt(id, 10);
+  const { showLoader, hideLoader } = useLoader();
 
   // quando il movie arriva/aggiorna, sincronizzo le recensioni
   useEffect(() => {
@@ -21,6 +23,7 @@ export default function MovieDetail() {
 
   // carico il singolo film
   useEffect(() => {
+    showLoader();
     axios
       .get(`http://localhost:3000/movies/${id}`)
       .then((res) => setMovie(res.data))
@@ -32,7 +35,9 @@ export default function MovieDetail() {
     axios
       .get("http://localhost:3000/movies")
       .then((res) => setMoviesCount(res.data.length))
-      .catch((err) => console.log("Errore nella chiamata:", err.message));
+      .catch((err) => console.log("Errore nella chiamata:", err.message)).finally(() => {
+        hideLoader();
+      });
   }, []);
 
   if (!movie) return null;
