@@ -89,7 +89,7 @@ export default function MovieDetail() {
           </p>
         </div>
       </div>
-      <ReviewById movieId={movie.id} />
+      <ReviewById reviews={movie.reviews} />
     </div>
   );
 }
