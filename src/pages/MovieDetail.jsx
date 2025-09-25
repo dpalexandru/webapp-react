@@ -2,15 +2,22 @@ import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReviewById from "../components/ReviewById";
+import ReviewForm from "../components/ReviewForm";
+
 
 
 export default function MovieDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [movie, setMovie] = useState(null);
-  const [moviesCount, setMoviesCount] = useState(0); // numero totale film
-
+  const [moviesCount, setMoviesCount] = useState(0);
+  const [reviews, setReviews] = useState([]);
   const currentId = parseInt(id, 10);
+
+  // quando il movie arriva/aggiorna, sincronizzo le recensioni
+  useEffect(() => {
+    if (movie?.reviews) setReviews(movie.reviews);
+  }, [movie]);
 
   // carico il singolo film
   useEffect(() => {
@@ -29,6 +36,11 @@ export default function MovieDetail() {
   }, []);
 
   if (!movie) return null;
+
+  // quando il form crea una review, la aggiungo in testa
+  const handleReviewCreated = (newReview) => {
+    setReviews((prev) => [newReview, ...prev]);
+  };
 
   // calcolo prev e next id in base al numero totale
   const prevId = currentId > 1 ? currentId - 1 : null;
@@ -62,7 +74,7 @@ export default function MovieDetail() {
         </div>
       </div>
 
-      <div className="row g-4">
+      <div className="row g-4 mt-3 bg-light p-3 rounded">
         <div className="col-md-4">
           <img
             src={`/${movie.image}`}
@@ -89,7 +101,11 @@ export default function MovieDetail() {
           </p>
         </div>
       </div>
+      <hr />
       <ReviewById reviews={movie.reviews} />
+      <hr />
+      <ReviewForm movieId={movie.id} onCreated={handleReviewCreated} />
+
     </div>
   );
 }

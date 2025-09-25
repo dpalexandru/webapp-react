@@ -9,7 +9,7 @@ export default function ReviewById({ reviews }) {
   const total = reviews.length;    // numero totale recensioni
 
   return (
-    <div className="mt-3">
+    <div className="mt-2 bg-light p-3 rounded">
       {/* titolo sezione recensioni con media e totale */}
       <div className="d-flex align-items-center mb-3">
         <h6 className="fw-bold mb-0 me-2">Reviews</h6>
