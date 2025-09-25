@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import ReviewById from "../components/ReviewById";
+
 
 export default function MovieDetail() {
   const { id } = useParams();
@@ -87,6 +89,7 @@ export default function MovieDetail() {
           </p>
         </div>
       </div>
+      <ReviewById movieId={movie.id} />
     </div>
   );
 }
