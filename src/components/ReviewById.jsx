@@ -1,28 +1,58 @@
-// definisco il componente ReviewById
 export default function ReviewById({ reviews }) {
-  // se non ci sono recensioni mostro un messaggio
   if (!reviews || reviews.length === 0) {
     return <p>No reviews yet.</p>;
   }
 
-  // se ci sono recensioni le stampo in lista
+  // calcolo la media dei voti
+  const avg = reviews.reduce((sum, r) => sum + r.vote, 0) / reviews.length;
+  const rounded = Math.round(avg); // arrotondo per le stelle piene
+  const total = reviews.length;    // numero totale recensioni
+
   return (
     <div className="mt-3">
-      {/* titolo sezione recensioni */}
-      <h6 className="fw-bold">Reviews:</h6>
+      {/* titolo sezione recensioni con media e totale */}
+      <div className="d-flex align-items-center mb-3">
+        <h6 className="fw-bold mb-0 me-2">Reviews</h6>
+        <div>
+          {/* stelle media */}
+          {[...Array(5)].map((_, i) => (
+            <i
+              key={i}
+              className={
+                i < rounded ? "fas fa-star text-warning" : "far fa-star text-muted"
+              }
+            ></i>
+          ))}
+          {/* media numerica + totale recensioni */}
+          <span className="ms-2 text-muted">
+            ({avg.toFixed(1)} – {total} reviews)
+          </span>
+        </div>
+      </div>
 
-      <ul className="list-group list-group-flush">
-        {/* ciclo tutte le recensioni con map */}
+      {/* lista recensioni */}
+      <div className="list-group">
         {reviews.map((review) => (
-          <li key={review.id} className="list-group-item">
-            {/* nome autore e voto */}
-            <strong>{review.name}</strong> ⭐ {review.vote}/5
-            <br />
-            {/* testo recensione */}
-            <span>{review.text}</span>
-          </li>
+          <div key={review.id} className="list-group-item">
+            <div className="d-flex justify-content-between align-items-center mb-1">
+              <strong>{review.name}</strong>
+              <div>
+                {[...Array(5)].map((_, i) => (
+                  <i
+                    key={i}
+                    className={
+                      i < review.vote
+                        ? "fas fa-star text-warning"
+                        : "far fa-star text-muted"
+                    }
+                  ></i>
+                ))}
+              </div>
+            </div>
+            <p className="mb-0 text-muted">{review.text}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

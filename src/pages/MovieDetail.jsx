@@ -82,9 +82,9 @@ export default function MovieDetail() {
           <p>{movie.abstract}</p>
 
           <p className="text-muted mt-4">
-            Creato il: {new Date(movie.created_at).toLocaleDateString()}
+            Created on: {new Date(movie.created_at).toLocaleDateString()}
             {movie.updated_at && (
-              <> • Aggiornato il: {new Date(movie.updated_at).toLocaleDateString()}</>
+              <> • Updated on: {new Date(movie.updated_at).toLocaleDateString()}</>
             )}
           </p>
         </div>
