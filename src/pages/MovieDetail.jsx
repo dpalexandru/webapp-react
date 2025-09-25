@@ -37,11 +37,16 @@ export default function MovieDetail() {
 
   if (!movie) return null;
 
-  // quando il form crea una review, la aggiungo in testa
+  // quando il form crea una review, la inserisco e riordino per created_at
   const handleReviewCreated = (newReview) => {
-    setReviews((prev) => [newReview, ...prev]);
+    setReviews((prev) => {
+      const updated = [...prev, newReview];
+      // ordino per data crescente → più vecchie prima, più recenti in fondo
+      return updated.sort(
+        (a, b) => new Date(a.created_at) - new Date(b.created_at)
+      );
+    });
   };
-
   // calcolo prev e next id in base al numero totale
   const prevId = currentId > 1 ? currentId - 1 : null;
   const nextId = currentId < moviesCount ? currentId + 1 : null;
@@ -102,7 +107,7 @@ export default function MovieDetail() {
         </div>
       </div>
       <hr />
-      <ReviewById reviews={movie.reviews} />
+      <ReviewById reviews={reviews} />
       <hr />
       <ReviewForm movieId={movie.id} onCreated={handleReviewCreated} />
 
